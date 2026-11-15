@@ -1,0 +1,8 @@
+# Interne Arbeitsdateien – nicht ins öffentliche Repo
+One-Shot-Prompt*.md
+node_modules/
+.tmp/
+*.log
+.DS_Store
+Thumbs.db
+.claude/
