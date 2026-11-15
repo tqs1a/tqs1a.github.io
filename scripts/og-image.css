@@ -1,0 +1,36 @@
+/* Nur für die OG-Bild-Vorlage (scripts/og-image.html), nicht Teil der Website */
+html, body { margin: 0; background: var(--bg); }
+#og {
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  font-family: var(--font);
+  font-feature-settings: var(--font-features);
+  background: var(--bg);
+}
+.band {
+  position: absolute;
+  inset: -30% -20%;
+  background:
+    radial-gradient(30% 26% at 52% 64%, rgba(99, 91, 255, .95), transparent 70%),
+    radial-gradient(28% 24% at 68% 52%, rgba(0, 212, 255, .85), transparent 70%),
+    radial-gradient(28% 26% at 82% 42%, rgba(255, 107, 181, .85), transparent 70%),
+    radial-gradient(30% 24% at 96% 30%, rgba(144, 137, 252, .95), transparent 72%);
+  transform: rotate(-12deg);
+  filter: blur(10px);
+}
+.content {
+  position: absolute;
+  inset: 0;
+  padding: 72px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .92) 0%, rgba(255, 255, 255, .7) 45%, rgba(255, 255, 255, 0) 75%);
+}
+.mark { display: flex; align-items: center; gap: 16px; font-size: 40px; font-weight: 650; letter-spacing: -0.03em; color: var(--ink); }
+.mark svg { width: 56px; height: 56px; }
+.claim { margin: 0; max-width: 14ch; font-size: 72px; line-height: 1.02; letter-spacing: -0.045em; font-weight: 600; color: var(--ink); }
+.claim .grad { display: inline-block; padding-bottom: .1em; white-space: nowrap; background: var(--gradient-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sub { margin: 0; font-size: 26px; font-weight: 500; color: var(--ink-2); letter-spacing: -0.01em; }
