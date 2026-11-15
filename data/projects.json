@@ -1,0 +1,107 @@
+{
+  "_hinweis": "Einzige Quelle der Wahrheit für alle Referenzen. Nach Änderungen: node scripts/build-projects.mjs. Alles in [[TODO: …]] ist noch offen und wird auf der Seite sichtbar angezeigt.",
+  "projekte": [
+    {
+      "slug": "hsk-uetze",
+      "name": "HSK Heizung Sanitär Klima GmbH",
+      "kurzname": "HSK Uetze",
+      "branche": "Handwerk · Heizung, Sanitär, Klima",
+      "ort": "Uetze",
+      "jahr": "2026",
+      "url": null,
+      "urlHinweis": "[[TODO: Live-URL nach dem Launch eintragen – hsk-uetze.de zeigt aktuell noch die alte WordPress-Seite]]",
+      "logo": {
+        "src": "/assets/img/projects/hsk-uetze/logo.webp",
+        "fallback": "/assets/img/projects/hsk-uetze/logo.png",
+        "width": 204,
+        "height": 113,
+        "wortmarke": false
+      },
+      "accent": "#002944",
+      "accent2": "#BF2B0B",
+      "kurz": "Redesign für einen Meisterbetrieb aus Uetze: klare Leistungsseiten, verständliche Förder-Infos und ein Anfrageformular in vier Schritten.",
+      "leistungen": ["Konzept & Design", "Entwicklung", "Performance & SEO-Grundlage"],
+      "tags": ["Relaunch", "Responsive", "Anfrageformular", "Förder-Infoseite"],
+      "technik": ["Astro", "Tailwind CSS", "Inter (selbst gehostet)"],
+      "umfang": "11 Seiten",
+      "praesentation": {
+        "typ": "screenshot",
+        "begruendung": "Die neue Seite ist noch nicht live, daher Screenshots aus dem lokalen Build.",
+        "desktop": {
+          "base": "/assets/img/projects/hsk-uetze/desktop",
+          "breiten": [640, 960, 1440, 2160],
+          "width": 1440,
+          "height": 900,
+          "alt": "Startseite von HSK Uetze am Desktop: Überschrift „Ihr Meisterbetrieb für Heizung, Sanitär & Klima in Uetze“ mit Anfrage-Button und Foto einer Wärmepumpe."
+        },
+        "mobil": {
+          "base": "/assets/img/projects/hsk-uetze/mobile",
+          "breiten": [390, 780],
+          "width": 390,
+          "height": 844,
+          "alt": "Startseite von HSK Uetze auf dem Smartphone mit festem Anruf-Button am unteren Rand."
+        }
+      },
+      "aufgabe": "Die bestehende WordPress-Seite sollte einer modernen, schnellen Website weichen, die Vertrauen aufbaut und Anfragen auslöst. Für Privatkunden ebenso wie für Hausverwaltungen und Gewerbe.",
+      "loesung": "Eine statische Website mit eigenen Seiten für Heizung, Sanitär, Klima, Förderung und Notdienst. Ein Anfrageformular in vier Schritten führt zur Anfrage, die Telefonnummer ist mobil jederzeit einen Daumen entfernt.",
+      "ergebnis": "[[TODO: Ergebnis nach dem Launch – z. B. Erfahrungen des Kunden oder messbare Veränderungen, nur belegbare Aussagen]]",
+      "highlights": [
+        { "titel": "Anfrage in vier Schritten", "text": "Leistung wählen, Details, Kontaktdaten, Übersicht. Mit Prüfung je Schritt und Honeypot statt reCAPTCHA." },
+        { "titel": "Karte erst nach Klick", "text": "Die Google-Karte lädt erst nach Einwilligung. Vorher entsteht keine Verbindung zu Google." },
+        { "titel": "Wärmepumpe als Scroll-Story", "text": "Eine eigene Sektion erklärt das Thema Wärmepumpe Schritt für Schritt beim Scrollen." },
+        { "titel": "Ruhige Bewegung", "text": "Herstellerlogos laufen als Endlosband und stehen still, wenn reduzierte Bewegung eingestellt ist." }
+      ]
+    },
+    {
+      "slug": "hausarztteam-brechler",
+      "name": "Hausarztteam Brechler",
+      "kurzname": "Hausarztteam Brechler",
+      "branche": "Gesundheit · Hausarztpraxis",
+      "ort": "Uetze",
+      "jahr": "2026",
+      "url": "https://praxis-brechler.de",
+      "urlHinweis": null,
+      "logo": {
+        "src": "/assets/img/projects/hausarztteam-brechler/icon-192.webp",
+        "fallback": "/assets/img/projects/hausarztteam-brechler/icon-192.png",
+        "width": 192,
+        "height": 189,
+        "wortmarke": true
+      },
+      "accent": "#396264",
+      "accent2": "#BA8F52",
+      "kurz": "Neue Website für eine Hausarztpraxis: Sprechzeiten, Leistungen und Online-Termin auf einen Blick, zweisprachig und ohne Datenbank.",
+      "leistungen": ["Konzept & Design", "Entwicklung", "Mehrsprachigkeit", "Datenschutz-Einwilligung"],
+      "tags": ["Relaunch", "Zweisprachig", "Statisch", "Responsive"],
+      "technik": ["Astro", "Tailwind CSS", "Astro i18n (DE/EN)", "Markdown-Inhalte"],
+      "umfang": "9 Hauptseiten, Deutsch und Englisch",
+      "praesentation": {
+        "typ": "screenshot",
+        "begruendung": "Screenshots statt Live-Einbettung: die Live-Seite zeigt beim Laden einen Einwilligungs-Banner, und Screenshots kontaktieren keine fremden Server.",
+        "desktop": {
+          "base": "/assets/img/projects/hausarztteam-brechler/desktop",
+          "breiten": [640, 960, 1440, 2160],
+          "width": 1440,
+          "height": 900,
+          "alt": "Seite „Öffnungszeiten & Anfahrt“ des Hausarztteams Brechler am Desktop: Sprechzeiten-Tabelle, Karte, die erst nach Klick lädt, und Hinweis zum Bereitschaftsdienst."
+        },
+        "mobil": {
+          "base": "/assets/img/projects/hausarztteam-brechler/mobile",
+          "breiten": [390, 780],
+          "width": 390,
+          "height": 844,
+          "alt": "Seite „Öffnungszeiten & Anfahrt“ des Hausarztteams Brechler auf dem Smartphone mit Sprechzeiten und Terminvergabe."
+        }
+      },
+      "aufgabe": "Die alte WordPress-Seite der Praxis sollte durch eine sichere, wartungsarme Website ersetzt werden. Patientinnen und Patienten sollen Sprechzeiten, Leistungen und die Terminbuchung sofort finden.",
+      "loesung": "Eine statische, zweisprachige Website ohne Datenbank und ohne Admin-Login im Web. Neuigkeiten entstehen als einfache Textdateien, Karte und KI-Chat laden erst nach Einwilligung.",
+      "ergebnis": "[[TODO: Ergebnis – z. B. Rückmeldung der Praxis, nur belegbare Aussagen]]",
+      "highlights": [
+        { "titel": "Deutsch und Englisch", "text": "Jede Seite gibt es in beiden Sprachen. Die Texte stehen zentral in je einer Datei." },
+        { "titel": "Einwilligung zuerst", "text": "Google-Karte und KI-Chat laden erst nach Zustimmung. Die Wahl lässt sich jederzeit im Footer ändern." },
+        { "titel": "Kein Login im Web", "text": "Statisches HTML ohne Datenbank und ohne Admin-Oberfläche. Neuigkeiten werden als Markdown gepflegt." },
+        { "titel": "Termin in einem Klick", "text": "„Online Termin buchen“ steht prominent im Kopf jeder Seite." }
+      ]
+    }
+  ]
+}
