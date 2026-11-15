@@ -1,0 +1,590 @@
+/* ==========================================================================
+   Sections – Hauptseite, in Reihenfolge der Seite.
+   ========================================================================== */
+
+/* CRITICAL:START – Hero-Teil wird vom Build inline in den <head> übernommen */
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.hero {
+  --diag: calc(tan(var(--skew)) * 100vw);   /* Höhe der Diagonale (ca. 10.5vw) */
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: max(680px, 100svh);
+  padding-top: calc(var(--nav-h) + var(--nav-offset) + env(safe-area-inset-top));
+}
+
+/* Hintergrund läuft unten um ca. 6° diagonal in Weiß aus; Inhalt bleibt gerade */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-canvas);
+  overflow: hidden;
+  background: var(--bg);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--diag)), 0 100%);
+}
+@supports not (width: calc(tan(6deg) * 1px)) {
+  .hero { --diag: 10.5vw; }
+}
+
+.hero__canvas,
+.hero__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero__canvas {
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+}
+.hero__bg.is-gl-ready .hero__canvas { opacity: 1; }
+
+/* CSS-Fallback: mehrere radiale Verläufe in den Bandfarben, nur per transform
+   animiert. Liegt immer darunter und ist sofort sichtbar. */
+.hero__fallback {
+  overflow: hidden;
+  /* wie der Shader: unten weich in Weiß auslaufen */
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 26%);
+  mask-image: linear-gradient(to top, transparent 0, #000 26%);
+}
+.hero__fallback::before,
+.hero__fallback::after {
+  content: '';
+  position: absolute;
+  inset: -30% -20%;
+  transform-origin: 50% 50%;
+}
+.hero__fallback::before {
+  background:
+    radial-gradient(32% 26% at 18% 66%, rgba(99, 91, 255, .95), transparent 70%),
+    radial-gradient(30% 24% at 42% 54%, rgba(0, 212, 255, .85), transparent 70%),
+    radial-gradient(30% 26% at 66% 44%, rgba(255, 107, 181, .85), transparent 70%),
+    radial-gradient(34% 26% at 88% 34%, rgba(144, 137, 252, .95), transparent 72%);
+  transform: rotate(-12deg);
+  animation: hero-drift-a 38s var(--ease) infinite alternate;
+}
+.hero__fallback::after {
+  background:
+    radial-gradient(26% 20% at 30% 58%, rgba(255, 107, 181, .55), transparent 70%),
+    radial-gradient(28% 22% at 74% 40%, rgba(0, 212, 255, .55), transparent 70%);
+  transform: rotate(-12deg);
+  animation: hero-drift-b 46s var(--ease) infinite alternate;
+  mix-blend-mode: multiply;
+  opacity: .7;
+}
+@keyframes hero-drift-a {
+  to { transform: rotate(-10deg) translate3d(4%, -3%, 0) scale(1.06); }
+}
+@keyframes hero-drift-b {
+  to { transform: rotate(-14deg) translate3d(-5%, 2%, 0) scale(1.1); }
+}
+/* Sobald der Shader sichtbar ist, Fallback pausieren und nach der Überblendung
+   ausblenden (spart Leistung). Fällt der Shader aus, ist er sofort wieder da. */
+.hero__bg.is-gl-ready .hero__fallback {
+  visibility: hidden;
+  transition: visibility 0s linear 900ms;
+}
+.hero__bg.is-gl-ready .hero__fallback::before,
+.hero__bg.is-gl-ready .hero__fallback::after,
+.hero:has(:focus-visible) .hero__fallback::before,
+.hero:has(:focus-visible) .hero__fallback::after { animation-play-state: paused; }
+
+/* Schleier für Lesbarkeit der Typografie über dem Band */
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .55) 0%, rgba(255, 255, 255, 0) 30%),
+    radial-gradient(120% 90% at 0% 45%, rgba(255, 255, 255, .86) 0%, rgba(255, 255, 255, .62) 38%, rgba(255, 255, 255, 0) 70%);
+}
+@media (max-width: 767px) {
+  .hero__veil {
+    /* Band hinter der großen Überschrift sichtbar lassen (Display-Text ≥ 3:1),
+       hinter Unterzeile und Buttons stärker aufhellen (≥ 4.5:1) */
+    background: linear-gradient(180deg, rgba(255, 255, 255, .25) 0%, rgba(255, 255, 255, .3) 38%, rgba(255, 255, 255, .82) 52%, rgba(255, 255, 255, .82) 80%, rgba(255, 255, 255, .3) 100%);
+  }
+}
+
+.hero__inner {
+  position: relative;
+  z-index: var(--z-content);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-block: var(--s-6) var(--s-5);
+}
+.hero__eyebrow {
+  margin-bottom: var(--s-4);
+  box-shadow: var(--shadow-sm);
+}
+.hero__title {
+  max-width: 13ch;
+  margin-bottom: var(--s-4);
+}
+/* Schlüsselwort in eigener Zeile halten */
+.hero__title .text-gradient { white-space: nowrap; }
+.hero__sub {
+  max-width: 34rem;
+  margin-bottom: var(--s-5);
+}
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero__ctas .btn--secondary {
+  background-color: rgba(255, 255, 255, .7);
+  border-color: rgba(10, 37, 64, .1);
+}
+@media (hover: hover) {
+  .hero__ctas .btn--secondary:hover { background-color: var(--bg); }
+}
+
+/* Kundenstreifen am unteren Rand */
+.hero__clients {
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  gap: var(--s-2);
+  padding-bottom: calc(var(--s-5) + env(safe-area-inset-bottom));
+}
+.hero__clients-label {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 479px) {
+  .hero__ctas { width: 100%; }
+  .hero__ctas .btn { flex: 1 1 100%; }
+  .hero__title { max-width: none; }
+}
+@media (min-width: 1024px) {
+  .hero__inner { padding-block: var(--s-5) var(--s-4); }
+  .hero__clients { padding-bottom: calc(var(--s-4) + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 1024px) and (min-height: 1000px) {
+  .hero__inner { padding-block: var(--s-7) var(--s-6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__fallback::before,
+  .hero__fallback::after { animation: none; }
+}
+
+/* Intro beim Laden (reines CSS, gesamt ca. 1.5 s).
+   Bewusst ohne GSAP: Die H1 ist das LCP-Element und soll nicht auf das
+   Laden der Animationsbibliothek warten. Die zwei Zeilengruppen der H1
+   gleiten aus einer clip-path-Maske nach oben. */
+.hero__title > span { display: block; }
+@keyframes intro-up {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+}
+/* Die Maske startet minimal geöffnet und ohne Verzögerung: So zählt der erste
+   Frame bereits als Paint der H1 (LCP), optisch bleibt es ein Hochgleiten. */
+@keyframes intro-line {
+  from { clip-path: inset(0 -5% 88% -5%); transform: translate3d(0, 55%, 0); }
+  to   { clip-path: inset(-20% -5% -25% -5%); transform: none; }
+}
+.js .hero__eyebrow   { animation: intro-up 900ms var(--ease) 60ms both; }
+.js .hero__title > span:nth-child(1) { animation: intro-line 1000ms var(--ease) both; }
+.js .hero__title > span:nth-child(2) { animation: intro-line 1000ms var(--ease) 100ms both; }
+.js .hero__sub       { animation: intro-up 900ms var(--ease) 420ms both; }
+.js .hero__ctas      { animation: intro-up 900ms var(--ease) 500ms both; }
+.js .hero__clients   { animation: intro-up 900ms var(--ease) 600ms both; }
+/* CRITICAL:END */
+
+/* --------------------------------------------------------------------------
+   Referenzen – gestapelter Showcase
+   Farben je Projekt kommen als --p-accent/--p-accent-2 aus projects.css
+   (generiert aus projects.json, damit keine Inline-Styles nötig sind).
+   -------------------------------------------------------------------------- */
+.refs { padding-top: calc(var(--section-y) * .75); }
+.refs__list {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ref-card {
+  --tint: color-mix(in srgb, var(--p-accent, var(--accent)) 9%, var(--bg));
+  --tint-2: color-mix(in srgb, var(--p-accent-2, var(--accent-2)) 10%, var(--bg));
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(90% 120% at 100% 0%, var(--tint-2), transparent 60%),
+    radial-gradient(80% 100% at 0% 100%, var(--tint), transparent 70%),
+    var(--bg);
+  box-shadow: var(--shadow);
+  transform-origin: 50% 0;
+  container-type: inline-size;
+}
+/* Abdunkeln für den Stapel-Effekt (Deckkraft setzt animations.js per GSAP) */
+.ref-card__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+}
+.ref-card__inner {
+  display: grid;
+  gap: var(--s-5);
+  padding: clamp(24px, 4vw, 56px);
+}
+.ref-card__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+}
+.ref-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  width: 100%;
+  margin-bottom: var(--s-2);
+}
+.ref-card__count {
+  flex: none;
+  white-space: nowrap;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.ref-card__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ref-card__logo img { height: 36px; width: auto; flex: none; }
+.ref-card__logo span { white-space: nowrap; font-size: clamp(.875rem, 3.6cqi, 1rem); }
+.ref-card__title { margin-top: var(--s-1); }
+.ref-card__branche {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--ink-3);
+}
+.ref-card__kurz { margin-block: var(--s-1) var(--s-2); color: var(--ink-2); }
+.ref-card__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-3);
+  margin-top: var(--s-3);
+}
+.icon--ext { width: 15px; height: 15px; }
+
+/* Bühne mit Browser- und Smartphone-Mockup */
+.ref-card__visual { position: relative; }
+.stage {
+  position: relative;
+  padding: 0 8% 10% 0;
+}
+.stage .browser { width: 100%; }
+.stage .phone {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 24%;
+  min-width: 84px;
+  padding: 5px;
+  border-radius: 24px;
+}
+.stage .phone__screen { border-radius: 19px; }
+.stage .phone__screen::before { height: 12px; top: 6px; }
+
+@media (min-width: 900px) {
+  .ref-card__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: var(--s-6);
+    min-height: min(640px, calc(100svh - var(--nav-h) - 96px));
+  }
+  /* Sticky-Stapel: jede Karte bleibt oben stehen, die nächste schiebt sich darüber */
+  .refs__list { gap: var(--s-6); }
+  .refs__item {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--nav-offset) + 24px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Leistungen – Bento-Grid
+   -------------------------------------------------------------------------- */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bento__card {
+  --mx: 50%;
+  --my: 50%;
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: clamp(24px, 3.2vw, 40px);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Lichtschein folgt dem Mauszeiger (--mx/--my setzt animations.js) */
+.bento__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(99, 91, 255, .10), rgba(0, 212, 255, .05) 40%, transparent 70%);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+@media (hover: hover) {
+  .bento__card:hover::before { opacity: 1; }
+}
+.bento__card p { color: var(--ink-2); max-width: 46ch; }
+.bento__art {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  margin-bottom: var(--s-3);
+}
+.art-fill { fill: var(--bg-soft); stroke: var(--line); stroke-width: 1.5; }
+.art-fill-soft { fill: color-mix(in srgb, var(--accent) 7%, var(--bg)); stroke: none; }
+.art-fill-accent { fill: var(--accent); }
+.art-line { fill: none; stroke: var(--ink-3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.art-line-on-accent { fill: none; stroke: rgba(255, 255, 255, .8); stroke-width: 1.5; stroke-linecap: round; }
+.art-accent-line { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.art-accent { fill: var(--accent-2); stroke: var(--accent); stroke-width: 1.5; }
+
+@media (min-width: 768px) {
+  .bento__card { grid-column: span 6; }
+}
+@media (min-width: 1024px) {
+  .bento__card { grid-column: span 5; min-height: 340px; }
+  .bento__card--wide { grid-column: span 7; }
+  .bento__card .bento__art { margin-bottom: auto; padding-bottom: var(--s-4); }
+}
+
+/* --------------------------------------------------------------------------
+   Prozess
+   -------------------------------------------------------------------------- */
+.process__grid { display: grid; gap: var(--s-6); }
+.process__head { display: grid; gap: var(--s-3); align-content: start; }
+.process__steps { position: relative; padding-left: var(--s-5); }
+.process__track {
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.process__progress {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+  transform-origin: 50% 0;
+}
+/* Mit JS zeichnet sich die Linie beim Scrollen (animations.js) */
+.js.motion .process__progress { transform: scaleY(0); }
+.process__list {
+  display: grid;
+  gap: clamp(48px, 8vw, 112px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  position: relative;
+  display: grid;
+  gap: var(--s-1);
+  transition: opacity 400ms var(--ease);
+}
+.step::before {
+  /* Punkt auf der Linie */
+  content: "";
+  position: absolute;
+  left: calc(var(--s-5) * -1);
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  transition: border-color 400ms var(--ease), background-color 400ms var(--ease), box-shadow 400ms var(--ease);
+}
+.step__nr {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  transition: color 400ms var(--ease);
+}
+.step__title,
+.step__text { transition: color 400ms var(--ease); }
+.step__text { color: var(--ink-2); }
+/* Gedämpft, solange nicht aktiv (nur wenn animations.js läuft).
+   Bewusst über die Farbe statt Deckkraft: --ink-3 hält noch 4.8:1 (WCAG AA). */
+.js.motion .step:not(.is-active) .step__title,
+.js.motion .step:not(.is-active) .step__text { color: var(--ink-3); }
+.step.is-active::before,
+html:not(.motion) .step::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgba(99, 91, 255, .15);
+}
+.step.is-active .step__nr { color: var(--accent-text); }
+
+@media (min-width: 900px) {
+  .process__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--s-7);
+    align-items: start;
+  }
+  .process__head {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--nav-offset) + var(--s-6));
+  }
+  .process__steps { padding-left: var(--s-6); padding-block: var(--s-6); }
+  .step::before { left: calc(var(--s-6) * -1); }
+}
+
+/* --------------------------------------------------------------------------
+   Über mich
+   -------------------------------------------------------------------------- */
+.about__grid { display: grid; gap: var(--s-6); align-items: center; }
+.about__media { max-width: 440px; width: 100%; }
+.about__body { display: grid; gap: var(--s-3); justify-items: start; }
+.about__text { color: var(--ink-2); font-size: var(--fs-lead); line-height: 1.6; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s-4);
+  width: 100%;
+  margin: var(--s-3) 0 0;
+  padding: var(--s-4) 0 0;
+  border-top: 1px solid var(--line);
+}
+.stats dd { margin: 0; }
+/* Zahl über dem Label, im DOM bleibt dt vor dd */
+.stat { display: flex; flex-direction: column-reverse; justify-content: flex-end; }
+@media (min-width: 900px) {
+  .about__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); }
+}
+
+/* --------------------------------------------------------------------------
+   Kontakt (dunkel)
+   -------------------------------------------------------------------------- */
+.contact { overflow: hidden; isolation: isolate; text-align: center; }
+.contact__glow {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 0;
+  width: min(1100px, 140vw);
+  aspect-ratio: 2 / 1;
+  translate: -50% -42%;
+  background:
+    radial-gradient(40% 50% at 30% 60%, rgba(99, 91, 255, .55), transparent 70%),
+    radial-gradient(35% 45% at 55% 55%, rgba(0, 212, 255, .35), transparent 70%),
+    radial-gradient(35% 45% at 75% 62%, rgba(255, 107, 181, .35), transparent 70%);
+  filter: blur(40px);
+  opacity: .9;
+}
+.contact__inner { display: grid; justify-items: center; gap: var(--s-4); }
+.contact__title { max-width: 16ch; }
+.contact__text { color: var(--on-ink-2); font-size: var(--fs-lead); margin-inline: auto; }
+.contact__actions { margin-top: var(--s-2); }
+.contact__mail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-1);
+}
+.contact__address {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--on-ink);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------------------
+   Footer (dunkel)
+   -------------------------------------------------------------------------- */
+.footer {
+  background: var(--ink);
+  color: var(--on-ink-2);
+  padding: var(--s-6) 0 calc(var(--s-5) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--on-ink-line);
+}
+.footer__grid { display: grid; gap: var(--s-5); }
+.wordmark--ink { color: var(--on-ink); }
+.footer__claim { margin-top: var(--s-1); color: var(--on-ink-2); }
+.footer__nav ul,
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer a:not(.wordmark) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--on-ink-2);
+  transition: color var(--t-ui) var(--ease);
+}
+@media (hover: hover) {
+  .footer a:not(.wordmark):hover { color: var(--on-ink); }
+}
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--on-ink-line);
+  font-size: var(--fs-small);
+}
+.footer__copy { color: var(--on-ink-3); }
+.footer__top { margin-left: auto; }
+.footer__top .icon { width: 16px; height: 16px; }
+@media (min-width: 900px) {
+  .footer__grid { grid-template-columns: 1fr auto; align-items: start; }
+  .footer__bottom { grid-column: 1 / -1; }
+}
