@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tqs1a.github.io/sitemap.xml

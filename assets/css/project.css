@@ -1,0 +1,229 @@
+/* ==========================================================================
+   Projektseiten (projekte/<slug>.html)
+   Farben je Projekt: --p-accent / --p-accent-2 aus projects.css (Body-Klasse).
+   ========================================================================== */
+
+/* Kopf ---------------------------------------------------------------------- */
+.pj-hero {
+  position: relative;
+  isolation: isolate;
+  padding-top: calc(var(--nav-h) + var(--nav-offset) + env(safe-area-inset-top) + var(--s-6));
+  padding-bottom: var(--s-7);
+}
+/* Farbverlauf in der Kundenfarbe, unten mit derselben 6°-Diagonale wie der Hero */
+.pj-hero__bg {
+  position: absolute;
+  inset: 0 0 18% 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 70% at 85% 20%, color-mix(in srgb, var(--p-accent-2) 22%, transparent), transparent 70%),
+    radial-gradient(70% 80% at 10% 90%, color-mix(in srgb, var(--p-accent) 20%, transparent), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--p-accent) 6%, var(--bg)), var(--bg-soft));
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - tan(var(--skew)) * 100vw), 0 100%);
+}
+.pj-back { margin-bottom: var(--s-4); }
+.pj-back .icon { width: 16px; height: 16px; transition: transform var(--t-ui) var(--ease); }
+@media (hover: hover) {
+  .pj-back:hover .icon { transform: translateX(-4px); }
+}
+.pj-hero__head {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-3);
+  max-width: 880px;
+  margin-bottom: var(--s-6);
+}
+.pj-hero__title {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+.pj-hero__branche { font-weight: 500; color: var(--ink-3); }
+.pj-hero__visual { max-width: 1040px; margin-inline: auto; }
+/* Intro des Projektkopfs in reinem CSS (wie der Hero der Startseite):
+   Titel und Mockup sind LCP-Kandidaten und warten nicht auf GSAP. */
+.js .pj-back                 { animation: intro-up 800ms var(--ease) both; }
+.js .pj-hero__head > *       { animation: intro-up 900ms var(--ease) both; }
+.js .pj-hero__head > :nth-child(2) { animation-delay: 60ms; }
+.js .pj-hero__head > :nth-child(3) { animation-delay: 120ms; }
+.js .pj-hero__head > :nth-child(4) { animation-delay: 180ms; }
+/* Das Mockup (LCP-Bild und Ziel des Shared-Element-Übergangs) bleibt bewusst ohne Intro */
+/* Ohne sections.css (lädt erst nach dem Kopf) muss die Keyframe-Regel hier stehen */
+@keyframes intro-up {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+}
+.pj-hero__visual .stage .phone { width: 22%; max-width: 220px; }
+
+/* Meta-Leiste --------------------------------------------------------------- */
+.pj-meta { position: relative; margin-top: calc(var(--s-5) * -1); }
+.pj-meta__bar {
+  display: grid;
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-4);
+}
+.pj-meta__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s-3) var(--s-4);
+  margin: 0;
+}
+.pj-meta__list dt {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pj-meta__list dd { margin: 4px 0 0; color: var(--ink); font-weight: 500; }
+.pj-meta__note { font-size: var(--fs-small); color: var(--ink-3); }
+@media (min-width: 1024px) {
+  .pj-meta__bar { grid-template-columns: 1fr auto; padding: var(--s-4) var(--s-5); }
+  .pj-meta__note { max-width: 28ch; }
+}
+
+/* Aufgabe, Lösung, Ergebnis -------------------------------------------------- */
+.pj-chapters .container { display: grid; gap: clamp(64px, 10vw, 128px); }
+.pj-chapter { display: grid; gap: var(--s-3); }
+.pj-chapter__title { font-size: var(--fs-h3); color: var(--accent-text); letter-spacing: var(--ls-h3); }
+.pj-chapter__text {
+  font-size: clamp(1.375rem, 2.6vw, 2.125rem);
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--ink);
+  max-width: 30ch;
+}
+@media (min-width: 900px) {
+  .pj-chapter { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-6); align-items: baseline; }
+}
+
+/* Galerie ------------------------------------------------------------------- */
+.pj-gallery__grid {
+  display: grid;
+  gap: var(--s-5);
+  align-items: center;
+}
+.pj-gallery figure { margin: 0; }
+.pj-gallery__mob { width: min(300px, 70%); margin-inline: auto !important; }
+@media (min-width: 1024px) {
+  .pj-gallery__grid { grid-template-columns: minmax(0, 8fr) minmax(0, 3fr); gap: var(--s-6); }
+  .pj-gallery__mob { width: 100%; }
+}
+
+/* Highlights ---------------------------------------------------------------- */
+.pj-highlights__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pj-hl {
+  --mx: 50%;
+  --my: 50%;
+  grid-column: span 12;
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+  padding: clamp(24px, 3vw, 36px);
+  overflow: hidden;
+  isolation: isolate;
+}
+.pj-hl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(380px circle at var(--mx) var(--my), color-mix(in srgb, var(--p-accent) 10%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+@media (hover: hover) {
+  .pj-hl:hover::before { opacity: 1; }
+}
+.pj-hl__nr {
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--accent-text);
+}
+.pj-hl p { color: var(--ink-2); }
+@media (min-width: 768px) {
+  .pj-hl { grid-column: span 6; }
+}
+@media (min-width: 1024px) {
+  .pj-hl { grid-column: span 5; min-height: 220px; }
+  .pj-hl--wide { grid-column: span 7; }
+}
+
+/* Nächstes Projekt ---------------------------------------------------------- */
+.pj-next__link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: clamp(80px, 12vw, 160px);
+  background:
+    radial-gradient(70% 120% at 90% 10%, color-mix(in srgb, var(--p-accent-2) 22%, transparent), transparent 70%),
+    radial-gradient(60% 110% at 0% 100%, color-mix(in srgb, var(--p-accent) 24%, transparent), transparent 70%),
+    var(--bg-soft);
+  color: var(--ink);
+}
+.pj-next__inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--s-2) var(--s-4);
+}
+.pj-next__inner .eyebrow { grid-column: 1 / -1; }
+.pj-next__name {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.pj-next__arrow {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 7vw, 88px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-ink);
+  transition: transform 400ms var(--ease), background-color var(--t-ui) var(--ease);
+}
+.pj-next__arrow .icon { width: 40%; height: 40%; }
+@media (hover: hover) {
+  .pj-next__link:hover .pj-next__arrow { transform: translateX(8px); background: var(--accent); }
+}
+.pj-next__link:focus-visible { outline-offset: -6px; }
+
+/* 404 ------------------------------------------------------------------------ */
+.nf {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: max(560px, 100svh);
+  padding-block: calc(var(--nav-h) + var(--nav-offset) + var(--s-6)) var(--s-7);
+}
+.nf__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(40% 50% at 78% 32%, rgba(99, 91, 255, .28), transparent 70%),
+    radial-gradient(35% 45% at 62% 60%, rgba(0, 212, 255, .22), transparent 70%),
+    radial-gradient(30% 40% at 90% 70%, rgba(255, 107, 181, .2), transparent 70%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - tan(var(--skew)) * 100vw), 0 100%);
+}
+.nf__inner { display: grid; justify-items: start; gap: var(--s-4); }
+.nf__title {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  max-width: 12ch;
+}
