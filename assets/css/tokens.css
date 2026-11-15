@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Design-Tokens – einzige Stelle für Farben, Typo, Abstände, Radien, Schatten.
+   Das restliche CSS verwendet ausschließlich diese Variablen.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/assets/fonts/inter-latin-variable.woff2') format('woff2-variations'),
+       url('/assets/fonts/inter-latin-variable.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Farben ---------------------------------------------------------------- */
+  --bg: #FFFFFF;
+  --bg-soft: #F6F9FC;
+  --ink: #0A2540;            /* 15.5:1 auf Weiß */
+  --ink-2: #425466;          /* 7.8:1  – Fließtext */
+  --ink-3: #697386;          /* 4.8:1  – Nebentexte, nur kurze Labels */
+  --line: #E3E8EE;
+  --accent: #635BFF;         /* Flächen, Buttons, Fokus (Weiß darauf 4.7:1) */
+  --accent-text: #5A52F5;    /* Akzent als Textfarbe, auch auf --bg-soft ≥ 5:1 */
+  --accent-2: #00D4FF;
+  --accent-3: #FF6BB5;
+  --accent-4: #9089FC;
+
+  /* Auf dunklem Grund (--ink) */
+  --on-ink: #FFFFFF;
+  --on-ink-2: #ADBDCC;       /* 8.1:1 auf --ink */
+  --on-ink-3: #8792A2;       /* 4.9:1 auf --ink */
+  --on-ink-line: rgba(255, 255, 255, .12);
+  --on-ink-accent: #B9B3FF;  /* 8.1:1 auf --ink */
+
+  /* Abgeleitete Hilfsfarben */
+  --accent-hover: #7A73FF;
+  --line-strong: #D3DAE3;
+  --chrome: #F2F5F8;         /* Browser-Leiste im Mockup */
+  --chrome-dot: #D5DCE4;
+  --device: #0E1A2B;         /* Smartphone-Rahmen */
+  --success: #12B76A;
+  --todo-bg: #FFF4D6;
+  --todo-ink: #6B4A00;       /* 7.9:1 auf --todo-bg */
+
+  --gradient-text: linear-gradient(100deg, #635BFF, #00D4FF 55%, #FF6BB5);
+  --focus-ring: 0 0 0 3px rgba(99, 91, 255, .30);
+
+  /* Typografie ------------------------------------------------------------ */
+  --font: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-features: "cv11", "ss01";
+
+  --fs-display: clamp(3rem, 7.2vw, 6.75rem);
+  --fs-h2: clamp(2rem, 4.2vw, 3.75rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-lead: clamp(1.125rem, 1.4vw, 1.3125rem);
+  --fs-body: 1.0625rem;
+  --fs-small: .9375rem;
+  --fs-eyebrow: .8125rem;
+
+  --lh-display: 1.02;
+  --lh-h2: 1.08;
+  --lh-h3: 1.2;
+  --lh-body: 1.65;
+
+  --ls-display: -0.045em;
+  --ls-h2: -0.035em;
+  --ls-h3: -0.02em;
+  --ls-eyebrow: 0.08em;
+
+  --measure: 62ch;
+
+  /* Raster & Abstände (8-px-Basis) ---------------------------------------- */
+  --container: 1200px;
+  --gutter: clamp(20px, 5vw, 48px);
+  --s-1: 8px;
+  --s-2: 16px;
+  --s-3: 24px;
+  --s-4: 32px;
+  --s-5: 48px;
+  --s-6: 64px;
+  --s-7: 96px;
+  --s-8: 128px;
+  --section-y: clamp(96px, 14vw, 192px);
+  --nav-h: 64px;
+  --nav-offset: 16px;
+
+  /* Form ------------------------------------------------------------------ */
+  --r-sm: 12px;   /* Buttons, Inputs */
+  --r-md: 20px;   /* Karten */
+  --r-lg: 28px;   /* große Flächen, Mockups */
+  --r-pill: 999px;
+
+  --shadow: 0 1px 1px rgba(10, 37, 64, .04), 0 8px 24px -8px rgba(10, 37, 64, .12), 0 36px 72px -36px rgba(50, 50, 93, .28);
+  --shadow-lg: 0 1px 1px rgba(10, 37, 64, .04), 0 16px 40px -12px rgba(10, 37, 64, .16), 0 60px 110px -40px rgba(50, 50, 93, .38);
+  --shadow-sm: 0 1px 1px rgba(10, 37, 64, .04), 0 2px 6px -2px rgba(10, 37, 64, .10);
+
+  --glass-bg: rgba(255, 255, 255, .72);
+  --glass-bg-solid: rgba(255, 255, 255, .94);
+  --glass-border: rgba(255, 255, 255, .65);
+  --glass-filter: blur(18px) saturate(160%);
+
+  /* Bewegung -------------------------------------------------------------- */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --t-fast: 180ms;
+  --t-ui: 220ms;
+  --t-reveal: 800ms;
+  --skew: 6deg;   /* Neigung der Stripe-Diagonale */
+
+  /* Ebenen ---------------------------------------------------------------- */
+  --z-canvas: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-overlay: 60;
+  --z-cursor: 90;
+  --z-wipe: 100;
+}

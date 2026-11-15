@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Base – Reset, Typografie, Layout-Grundlagen, Hilfsklassen.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + var(--nav-offset) * 2);
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink-2);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-feature-settings: var(--font-features);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img, svg, video, canvas, picture { display: block; max-width: 100%; }
+img, video { height: auto; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul[role='list'], ol[role='list'] { list-style: none; margin: 0; padding: 0; }
+:where(h1, h2, h3, h4, p, figure, blockquote, dl, dd) { margin: 0; }
+
+/* Typografie --------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  color: var(--ink);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.display {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+h2, .h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+h3, .h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+}
+p, li, dd { text-wrap: pretty; }
+p { max-width: var(--measure); }
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  line-height: 1.4;
+}
+
+/* Verlauf nur auf einzelnen Schlüsselwörtern */
+.text-gradient {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  /* Unterlängen nicht abschneiden */
+  padding-bottom: .06em;
+}
+@media (forced-colors: active) {
+  .text-gradient { color: CanvasText; background: none; }
+}
+
+/* Platzhalter aus data/site.js und projects.json sichtbar markieren */
+.todo {
+  background: var(--todo-bg);
+  color: var(--todo-ink);
+  border-radius: 4px;
+  padding: 0 .25em;
+  font-weight: 500;
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Layout ------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+.section--soft { background: var(--bg-soft); }
+.section--ink { background: var(--ink); color: var(--on-ink-2); }
+.section--ink :is(h1, h2, h3) { color: var(--on-ink); }
+
+.section-head {
+  display: grid;
+  gap: var(--s-3);
+  max-width: 760px;
+  margin-bottom: var(--s-7);
+}
+.section-head h2 + .h2-sub {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  font-weight: 600;
+  color: var(--ink-3);
+  text-wrap: balance;
+  margin-top: calc(var(--s-3) * -1);
+}
+
+/* Barrierefreiheit --------------------------------------------------------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: calc(var(--z-wipe) + 1);
+  padding: 12px 18px;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform var(--t-ui) var(--ease);
+}
+.skip-link:focus-visible { transform: none; }
+
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.section--ink :focus-visible { outline-color: var(--on-ink-accent); }
+
+::selection { background: rgba(99, 91, 255, .18); color: var(--ink); }
+
+/* Reveals: Ausgangszustand nur mit JS (html.js), sonst ist alles sichtbar.
+   animations.js übernimmt per GSAP. Schlägt das fehl, setzt das Inline-Skript
+   im <head> nach 3 s .reveal-done und alles wird sichtbar. ---------------- */
+/* Nur bis GSAP übernimmt (html.anim-ready): danach setzt animations.js die
+   Ausgangszustände selbst als Inline-Styles. Sonst würde nach clearProps
+   wieder der CSS-Versatz greifen und Inhalte springen zurück. */
+.js:not(.anim-ready) [data-reveal] { opacity: 0; transform: translate3d(0, 32px, 0); }
+.js:not(.anim-ready) [data-split] { visibility: hidden; }
+.js.reveal-done:not(.anim-ready) [data-reveal] { opacity: 1; transform: none; }
+.js.reveal-done:not(.anim-ready) [data-split] { visibility: visible; }
+
+/* Zeilen-Splitter: jede Zeile gleitet aus ihrer eigenen Maske */
+.split-line {
+  display: block;
+  overflow: hidden;
+  /* Platz für Unterlängen, ohne die Zeilenhöhe zu ändern */
+  padding-bottom: .12em;
+  margin-bottom: -.12em;
+}
+.split-line__inner { display: block; }
+
+/* Seitenübergänge: native View Transitions für Seitenwechsel ------------- */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out 380ms var(--ease) both; }
+::view-transition-new(root) { animation: vt-in 520ms var(--ease) both; }
+::view-transition-group(*) { animation-duration: 650ms; animation-timing-function: var(--ease); }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(16px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) { animation: vt-fade-out 200ms linear both; }
+  ::view-transition-new(root) { animation: vt-fade-in 200ms linear both; }
+  ::view-transition-group(*) { animation-duration: 0s; }
+}
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+
+/* Lenis-Grundstile (aus lenis.css übernommen) */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveals nur als kurzes Einblenden (Opacity per GSAP), ohne Weg */
+  .js:not(.anim-ready) [data-reveal] { transform: none; }
+}
