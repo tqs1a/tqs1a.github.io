@@ -103,7 +103,12 @@ function fillCopy(html) {
 function inject(html, name, content) {
   const re = new RegExp(`(<!-- ${name}:START[^>]*-->)[\\s\\S]*?(\\s*<!-- ${name}:END -->)`);
   if (!re.test(html)) throw new Error(`Marker ${name} fehlt`);
-  return html.replace(re, (_, a, b) => `${a}\n${content}${b}`);
+  // Leerraum vor dem END-Marker auf genau einen Zeilenumbruch + Einrückung
+  // normalisieren, damit wiederholte Läufe exakt dasselbe Ergebnis liefern.
+  return html.replace(re, (_, a, b) => {
+    const end = b.replace(/^\s*/, (ws) => `\n${ws.split('\n').pop()}`);
+    return content ? `${a}\n${content}${end}` : `${a}${end}`;
+  });
 }
 function extract(html, name) {
   const m = html.match(new RegExp(`<!-- SHARED:${name}:START -->[\\s\\S]*?<!-- SHARED:${name}:END -->`));
